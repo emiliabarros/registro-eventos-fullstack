@@ -1,8 +1,12 @@
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import mysql.connector
 from typing import List
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -28,10 +32,10 @@ class Participante(BaseModel):
 # Conexión DB
 def get_db():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="1234",  
-        database="participantes_db"
+        host=os.getenv("DB_HOST", "localhost"),
+        user=os.getenv("DB_USER", "root"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME", "participantes_db"),
     )
 
 # GET
